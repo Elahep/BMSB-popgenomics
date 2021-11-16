@@ -12,9 +12,13 @@ Whole genome assembly data are available in the NCBI as Genbank assembly accessi
 Using <a href="https://github.com/ncbi/sra-tools/wiki/HowTo:-fasterq-dump" title="SRAtoolkit">SRAtoolkit</a> we can download SRA files and extract FASTQ files from them. We know the SRR accession number for the BMSB samples are SRR13005202-SRR13005590. We can use a simple bash loop to get all the 389 files. As these are paired-end reads, we will get two FASTQ files per sample.
   
   `module load sratoolkit`
+  
   `for i in {202..590};`
+  
   `do`
+  
   `fasterq-dump --skip-technical SRR13005${i}`
+  
   `done`
 
   
