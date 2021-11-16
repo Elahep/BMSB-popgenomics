@@ -118,7 +118,7 @@ Runnig the help command for samtools flagstats will give information on what eac
 	0x400  1024  DUP            PCR or optical duplicate
 	0x800  2048  SUPPLEMENTARY  supplementary alignment
 	
-	```
+```
 
 By knowing what each flag means (see above), we can edit .bam files, for example we can remove PCR duplicates or filter out unmapped reads:
 
