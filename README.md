@@ -30,7 +30,7 @@ done
   
   ## Aligning ddRAD reads against the reference genome
   
-We will use <a href="http://bio-bwa.sourceforge.net/bwa.shtml" title="BWA"<BWA>/a> to map reads to the BMSB reference genome. 
+We will use <a href="http://bio-bwa.sourceforge.net/bwa.shtml" title="BWA">BWA</a> to map reads to the BMSB reference genome. 
 
  First, we need to index the reference genome (for more information in indexing see <a href="https://www.nature.com/articles/nbt0509-455" title="Trapnell & Salzberg 2009">Trapnell & Salzberg 2009</a>).
  
