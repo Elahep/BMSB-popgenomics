@@ -101,28 +101,27 @@ Or the following command for a more comprehensive stats:
 Runnig the help command for samtools flagstats will give information on what each FLAGS argument represents:
 	
 ```
-	Each FLAGS argument is either an INT (in decimal/hexadecimal/octal) representing
-	a combination of the following numeric flag values, or a comma-separated string
-	NAME,...,NAME representing a combination of the following flag names:
+Each FLAGS argument is either an INT (in decimal/hexadecimal/octal) representing
+a combination of the following numeric flag values, or a comma-separated string
+NAME,...,NAME representing a combination of the following flag names:
 
-	0x1     1  PAIRED         paired-end / multiple-segment sequencing technology
-	0x2     2  PROPER_PAIR    each segment properly aligned according to aligner
-	0x4     4  UNMAP          segment unmapped
-	0x8     8  MUNMAP         next segment in the template unmapped
-	0x10    16  REVERSE        SEQ is reverse complemented
-	0x20    32  MREVERSE       SEQ of next segment in template is rev.complemented
-	0x40    64  READ1          the first segment in the template
-	0x80   128  READ2          the last segment in the template
-	0x100   256  SECONDARY      secondary alignment
-	0x200   512  QCFAIL         not passing quality controls or other filters
-	0x400  1024  DUP            PCR or optical duplicate
-	0x800  2048  SUPPLEMENTARY  supplementary alignment
-	
+0x1     1  PAIRED         paired-end / multiple-segment sequencing technology
+0x2     2  PROPER_PAIR    each segment properly aligned according to aligner
+0x4     4  UNMAP          segment unmapped
+0x8     8  MUNMAP         next segment in the template unmapped
+0x10    16  REVERSE        SEQ is reverse complemented
+0x20    32  MREVERSE       SEQ of next segment in template is rev.complemented
+0x40    64  READ1          the first segment in the template
+0x80   128  READ2          the last segment in the template
+0x100   256  SECONDARY      secondary alignment
+0x200   512  QCFAIL         not passing quality controls or other filters
+0x400  1024  DUP            PCR or optical duplicate
+0x800  2048  SUPPLEMENTARY  supplementary alignment	
 ```
 
 By knowing what each flag means (see above), we can edit .bam files, for example we can remove PCR duplicates or filter out unmapped reads:
 
-`samtools view -F 4 -b SRR13005202.bam > SRR13005202_mapped.bam   --> this new bam only contains mapped reads, if using -f (instead of -F) we will only retain unmapped reads`
+`samtools view -F 4 -b SRR13005202.bam > SRR13005202_mapped.bam # this new bam only contains mapped reads, if using -f (instead of -F) we will only retain unmapped reads`
 
 
 ## Variant calling
