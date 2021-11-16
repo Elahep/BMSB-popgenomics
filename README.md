@@ -122,9 +122,7 @@ Runnig the help command for samtools flagstats will give information on what eac
 
 By knowing what each flag means (see above), we can edit .bam files, for example we can remove PCR duplicates or filter out unmapped reads:
 
-```
-samtools view -F 4 -b SRR13005202.bam > SRR13005202_mapped.bam   --> this new bam only contains mapped reads, if using -f (instead of -F) we will only retain unmapped reads
-```
+`samtools view -F 4 -b SRR13005202.bam > SRR13005202_mapped.bam   --> this new bam only contains mapped reads, if using -f (instead of -F) we will only retain unmapped reads`
 
 
 ## Variant calling
