@@ -80,7 +80,7 @@ SRR13005202.2	97	NW_020110846.1	5749	0	116M22S	NW_020110616.1	493707	0	TATTTTTTC
 SRR13005202.2	145	NW_020110616.1	493707	56	61M2D84M	NW_020110846.1	5749	0	AGCAAAAGATTGCCCACGTGGTAGACATTCCTTTCTTCCCATCTCTTTCGCCTACTGTACAGAGGGTTGTAGCCAGGAAACCTATTCTTCTATTGACCTCTTTCTCATCCACTATTTCTCTCATATTCTTCATGATTTGGTTATA	FFFFFFFFFFF:FFFFFFF:FFFFFFFF,FF:FFFFFFFFFFFFFF,FFFFFFFFFFFFFFFFFFFFFF,FFFFFFFFFFFFFFFFFFFFFFF:FFFFFFFFFFFFFFFFFFFFFFFFFF:FFFFFFFFFFFF,FFFFFFFFFFF	NM:i:5	MD:Z:1A59^TT30C37A15	MC:Z:116M22S	AS:i:125	XS:i:96
 ```
 
- Each line corresponds to alignment information for a single read. Check out <a href=" https://hbctraining.github.io/Intro-to-rnaseq-hpc-O2/lessons/04_alignment_quality.html" title="this tutorial">this tutorial</a< to find out the meaning of each field in the alignment section.
+ Each line corresponds to alignment information for a single read. Check out <a href=" https://hbctraining.github.io/Intro-to-rnaseq-hpc-O2/lessons/04_alignment_quality.html" title="this tutorial">this tutorial</a> to find out the meaning of each field in the alignment section.
   
   
   
