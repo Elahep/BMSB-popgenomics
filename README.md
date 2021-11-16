@@ -10,19 +10,23 @@ We start by using the ddRAD data of the BMSB generated in <a href="https://bmcge
 Demultiplexed ddRAD reads are available in the NCBI under the BioProject ID: <a href="https://www.ncbi.nlm.nih.gov/bioproject/?term=PRJNA675311." title="PRJNA675311.">PRJNA675311.</a> (SRA files).
 Whole genome assembly data are available in the NCBI as Genbank assembly accession <a href="https://www.ncbi.nlm.nih.gov/assembly/GCF_000696795.1/" title="GCA_000696795.1.">GCA_000696795.1.</a>
   
-Whole genome assembly can be downloaded as a .tar file. Use the `tar -xf` command to extract .tar file and get a .fna.gz which is basically a nucleic acid fasta file.
+Whole genome assembly can be downloaded as .tar file. Use the `tar -xf` command to extract .tar file and get .fna.gz which is basically a nucleic acid fasta file.
+Count the number of sacffolds:
+  
+  `grep -c "^>" **.fna`
+  
   
 Using <a href="https://github.com/ncbi/sra-tools/wiki/HowTo:-fasterq-dump" title="SRAtoolkit">SRAtoolkit</a> we can download SRA files and extract FASTQ files from them. We know the SRR accession number for the BMSB samples are SRR13005202-SRR13005590. We can use a simple bash loop to get all the 389 files. As these are paired-end reads, we will get two FASTQ files per sample.
  
 ```
 module load sratoolkit
-for i in {219..300};
+for i in {202..590};
 do
-fasterq-dump --progress --skip-technical SRR13005${i}
+fasterq-dump --skip-technical SRR13005${i}
 done
 ```
   
- 
+
 
   
 
