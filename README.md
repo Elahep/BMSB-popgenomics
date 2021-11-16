@@ -5,8 +5,7 @@ We start by using the ddRAD data of the BMSB generated in <a href="https://bmcge
   
  
   ## Downloading genomic data from NCBI
-
-  
+ 
 Demultiplexed ddRAD reads are available in the NCBI under the BioProject ID: <a href="https://www.ncbi.nlm.nih.gov/bioproject/?term=PRJNA675311." title="PRJNA675311.">PRJNA675311.</a> (SRA files).
 Whole genome assembly data are available in the NCBI as Genbank assembly accession <a href="https://www.ncbi.nlm.nih.gov/assembly/GCF_000696795.1/" title="GCA_000696795.1.">GCA_000696795.1.</a>
   
@@ -15,7 +14,6 @@ Whole genome assembly can be downloaded as .tar file. Use the `tar -xf` command 
  Count the number of scaffolds:
   
 `grep -c "^>" REFERENCE_GENOME.fa`
-  
   
 Using <a href="https://github.com/ncbi/sra-tools/wiki/HowTo:-fasterq-dump" title="SRAtoolkit">SRAtoolkit</a> we can download SRA files and extract FASTQ files from them. We know the SRR accession number for the BMSB samples are SRR13005202-SRR13005590. We can use a simple bash loop to get all the 389 files. As these are paired-end reads, we will get two FASTQ files per sample.
  
@@ -80,10 +78,61 @@ SRR13005202.2	97	NW_020110846.1	5749	0	116M22S	NW_020110616.1	493707	0	TATTTTTTC
 SRR13005202.2	145	NW_020110616.1	493707	56	61M2D84M	NW_020110846.1	5749	0	AGCAAAAGATTGCCCACGTGGTAGACATTCCTTTCTTCCCATCTCTTTCGCCTACTGTACAGAGGGTTGTAGCCAGGAAACCTATTCTTCTATTGACCTCTTTCTCATCCACTATTTCTCTCATATTCTTCATGATTTGGTTATA	FFFFFFFFFFF:FFFFFFF:FFFFFFFF,FF:FFFFFFFFFFFFFF,FFFFFFFFFFFFFFFFFFFFFF,FFFFFFFFFFFFFFFFFFFFFFF:FFFFFFFFFFFFFFFFFFFFFFFFFF:FFFFFFFFFFFF,FFFFFFFFFFF	NM:i:5	MD:Z:1A59^TT30C37A15	MC:Z:116M22S	AS:i:125	XS:i:96
 ```
 
- Each line corresponds to alignment information for a single read. Check out <a href=" https://hbctraining.github.io/Intro-to-rnaseq-hpc-O2/lessons/04_alignment_quality.html" title="this tutorial">this tutorial</a> to find out the meaning of each field in the alignment section.
+ Each line corresponds to alignment information for a single read. Check out <a href="https://hbctraining.github.io/Intro-to-rnaseq-hpc-O2/lessons/04_alignment_quality.html" title="this tutorial">this tutorial</a> to find out the meaning of each field in the alignment section.
   
   
+
+In order to do downstream analysis (e.g. SNP calling) we need sorted BAM files (Binary Alignment Map). Using samtools we can convert .sam to .bam and simultaneously sort .bam files.	
+
+`samtools sort -@ 4 SRR13005202.sam.gz -o SRR13005202.bam  ##@ is the number of threads.`
+
+Now index .bam files. Some downstream applications need the index of your .bam file.
+	
+`samtools index SRR13005202.bam`
   
+We can explore the properties of sequence data (reads) in .bam files using samtools flagstats. 
+	
+`samtools flagstat SRR13005202.bam`
+
+Or the following command for a more comprehensive stats:
+
+`samtools stats  SRR13005202.bam`
+
+Runnig the help command for samtools flagstats will give information on what each FLAGS argument represents:
+	
+```
+	Each FLAGS argument is either an INT (in decimal/hexadecimal/octal) representing
+	a combination of the following numeric flag values, or a comma-separated string
+	NAME,...,NAME representing a combination of the following flag names:
+
+	0x1     1  PAIRED         paired-end / multiple-segment sequencing technology
+	0x2     2  PROPER_PAIR    each segment properly aligned according to aligner
+	0x4     4  UNMAP          segment unmapped
+	0x8     8  MUNMAP         next segment in the template unmapped
+	0x10    16  REVERSE        SEQ is reverse complemented
+	0x20    32  MREVERSE       SEQ of next segment in template is rev.complemented
+	0x40    64  READ1          the first segment in the template
+	0x80   128  READ2          the last segment in the template
+	0x100   256  SECONDARY      secondary alignment
+	0x200   512  QCFAIL         not passing quality controls or other filters
+	0x400  1024  DUP            PCR or optical duplicate
+	0x800  2048  SUPPLEMENTARY  supplementary alignment
+	
+	```
+
+By knowing what each flag means (see above), we can edit .bam files, for example we can remove PCR duplicates or filter out unmapped reads:
+
+```
+samtools view -F 4 -b SRR13005202.bam > SRR13005202_mapped.bam   --> this new bam only contains mapped reads, if using -f (instead of -F) we will only retain unmapped reads
+```
+
+
+## Variant calling
+
+We will use <a href="https://catchenlab.life.illinois.edu/stacks/comp/ref_map.php" title="Stacks ref_map.pl">Stacks ref_map.pl</a> to assemble loci according to the alingment position for each read in .bam files and call SNPs in each sample.
+
+	
+
 
 
 
