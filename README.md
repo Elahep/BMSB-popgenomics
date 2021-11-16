@@ -6,10 +6,22 @@ We start by using the ddRAD data of the BMSB generated in <a href="https://bmcge
  
   ## Downloading genomic data from NCBI
  
-  Demultiplexed ddRAD reads are available in the NCBI under the BioProject ID: <a href="https://www.ncbi.nlm.nih.gov/bioproject/?term=PRJNA675311." title="PRJNA675311.">PRJNA675311.</a> 
-  Whole genome assembly data are available in the NCBI as Genbank assembly accession <a href="https://www.ncbi.nlm.nih.gov/assembly/GCF_000696795.1/" title="GCA_000696795.1.">GCA_000696795.1.</a>
+Demultiplexed ddRAD reads are available in the NCBI under the BioProject ID: <a href="https://www.ncbi.nlm.nih.gov/bioproject/?term=PRJNA675311." title="PRJNA675311.">PRJNA675311.</a> (SRA files)
+Whole genome assembly data are available in the NCBI as Genbank assembly accession <a href="https://www.ncbi.nlm.nih.gov/assembly/GCF_000696795.1/" title="GCA_000696795.1.">GCA_000696795.1.</a>
+  
+Using <a href="https://github.com/ncbi/sra-tools/wiki/HowTo:-fasterq-dump" title="SRAtoolkit">SRAtoolkit</a> we can download SRA files and extract FASTQ files from them. We know the SRR accession number for the BMSB samples are SRR13005202-SRR13005590. We can use a simple bash loop to get all the 389 files. As these are paired-end reads, we will get two FASTQ files per sample.
+  
+`module load sratoolkit
+for i in {202..590};
+do
+fasterq-dump --skip-technical SRR13005${i}
+done`
+
   
   
+
+  
+
 
 
 
