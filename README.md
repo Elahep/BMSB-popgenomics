@@ -37,7 +37,7 @@ module load BWA
 bwa index REFERENCE_GENOME.fa
 ```
   
-As our ddRAD sequences are 150 bp we will use BWA-MEM to align the reads to the reference genome. For shorted sequences (up to 100 bp) use BWA-backtrack.
+As our ddRAD sequences are 150 bp we will use BWA-MEM to align the reads to the reference genome. For shorter sequences (up to 100 bp) use BWA-backtrack.
 I will run the program with default features (mostly recommended).
   
 ```
