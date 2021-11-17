@@ -2,11 +2,6 @@
 
 Here we will analyze population genomic structure and identify putative loci associated with invasion success in the brown marmorated stink bug (BMSB).
 We start by using the ddRAD data of the BMSB generated in <a href="https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-021-07678-z" title="Yan et al 2020.">Yan et al 2020.</a> Also, we will use the whole genome assembly of the BMSB from <a href="https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-020-6510-7" title="Sparks et al 2020.">Sparks et al 2020.<a>
-  
- ### <a href="https://github.com/Elahep/BMSB-popgenomics#downloading-genomic-data-from-ncbi" title="Downloading genomic data from NCBI">Downloading genomic data from NCBI<a>
- ### <a href="https://github.com/Elahep/BMSB-popgenomics#aligning-ddrad-reads-against-the-reference-genome" title="Aligning ddRAD reads against reference genome">Aligning ddRAD reads against reference genome<a>
- ### <a href="https://github.com/Elahep/BMSB-popgenomics#variant-calling" title="Variant calling">Variant calling<a>
-	
 	
   ## Downloading genomic data from NCBI
  
