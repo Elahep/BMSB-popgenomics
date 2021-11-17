@@ -94,7 +94,7 @@ We can explore the properties of sequence data (reads) in .bam files using samto
 	
 `samtools flagstat SRR13005202.bam`
 
-Or the following command for a more comprehensive stats:
+Or the following command for more comprehensive stats:
 
 `samtools stats  SRR13005202.bam`
 
