@@ -130,9 +130,11 @@ We will use <a href="https://catchenlab.life.illinois.edu/stacks/comp/ref_map.ph
 	
 First, we will run **gstacks**. This module will incorporate aligned paired-end reads and by using a sliding window method will create loci.
 
-```samples=**path to the directory containing .BAM files**
- popmap=**path to population map file (popmap.txt)**
- gstacks -I $samples -M $popmap --rm-unpaired-reads -O $samples -t 8```
+```
+samples=**path to the directory containing .BAM files**
+popmap=**path to population map file (popmap.txt)**
+gstacks -I $samples -M $popmap --rm-unpaired-reads -O $samples -t 8
+```
 
 	
 
