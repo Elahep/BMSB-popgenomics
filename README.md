@@ -138,9 +138,9 @@ gstacks -I $samples -M $popmap --rm-unpaired-reads -O $samples -t 8
 
 	
 
-We now use **population** to call SNPs. I have used a relatively stringent threshold for missing SNPs here in which only SNPs that are present in 80% of individuals within a populations must be retained (p = 0.8). I have also removed SNPs with MAF<0.03 to exclude extremely rare and thus potentially erroneous SNPs.
+We now use **population** to call SNPs. I have removed SNPs with MAF<0.03 to exclude extremely rare and thus potentially erroneous SNPs.
 
-`populations -P ./ -M ./popmap.txt -t 8 --min-maf 0.03 -r 0.8 --vcf --treemix`
+`populations -P ./ -M ./popmap.txt -t 8 --min-maf 0.03 --vcf`
 
 
 	
