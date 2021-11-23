@@ -14,7 +14,7 @@ Whole genome assembly can be downloaded as .tar file. Use the `tar -xf` command 
   
 `grep -c "^>" REFERENCE_GENOME.fa`
   
-Using <a href="https://github.com/ncbi/sra-tools/wiki/HowTo:-fasterq-dump" title="SRAtoolkit">SRAtoolkit</a> we can download SRA files and extract FASTQ files from them. We know the SRR accession number for the BMSB samples are SRR13005202-SRR13005590. We can use a simple bash loop to get all the 389 files. As these are paired-end reads, we will get two FASTQ files per sample.
+Using <a href="https://github.com/ncbi/sra-tools/wiki/HowTo:-fasterq-dump" title="SRAtoolkit">SRAtoolkit</a> we can download SRA files and extract FASTQ files from them. We know the SRR accession numbers for the BMSB samples are SRR13005202-SRR13005590. We can use a simple bash loop to get all the 389 files. As these are paired-end reads, we will get two FASTQ files per sample.
  
 ```
 module load sratoolkit
@@ -128,7 +128,20 @@ By knowing what each flag means (see above), we can edit .bam files, for example
 We will use <a href="https://catchenlab.life.illinois.edu/stacks/comp/ref_map.php" title="Stacks ref_map.pl">Stacks ref_map.pl</a> to assemble loci according to the alingment position for each read in .bam files and call SNPs in each sample.
 
 	
+First, we will run **gstacks**. This module will incorporate aligned paired-end reads and by using a sliding window method will create loci.
 
+`samples=**path to the directory containing .BAM files**
+popmap=**path to population map file (popmap.txt)**
+gstacks -I $samples -M $popmap --rm-unpaired-reads -O $samples -t 8`
+	
+
+We now use **population** to call SNPs. I have used a relatively stringent threshold for missing SNPs here in which only SNPs that are present in 80% of individuals within a populations must be retained (p = 0.8). I have also removed SNPs with MAF<0.03 to exclude extremely rare and thus potentially erroneous SNPs.
+
+`populations -P ./ -M ./popmap.txt -t 8 --min-maf 0.03 -r 0.8 --vcf --treemix`
+
+
+	
+	
 
 
 
