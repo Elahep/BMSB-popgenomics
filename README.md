@@ -251,6 +251,6 @@ For instance, PLINK can be used to do a PCA and have a preliminary view of any p
 	
 
 ```
-plink --vcf H1_bialSNP_MAF_geno_LD.vcf --double-id --allow-extra-chr --set-missing-var-ids @:# --make-bed --pca --out H1_bialSNP_MAF_geno_LD_pca
+plink --vcf H1_bialSNP_MAF_geno_LD.vcf --allow-extra-chr --set-missing-var-ids @:# --make-bed --pca --out H1_bialSNP_MAF_geno_LD_pca
 ```
 
