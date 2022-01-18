@@ -207,27 +207,35 @@ Having information about variant information fields, we can produce histograms o
 	
 Now using BCFtools we can remove non-biallelic SNPs and indels:
 	
-`bcftools view -m2 -M2 -v snps,indels -O b -o H1_bialSNP.bcf`
+```
+bcftools view -m2 -M2 -v snps,indels -O b -o H1_bialSNP.bcf
+```
 	
 We can also filter SNPs based on a MAF threshold:
 	
-`bcftools filter -i 'MAF > 0.03' -O v -o H1_bialSNP_MAF.vcf H1_bialSNP.bcf`
+```
+bcftools filter -i 'MAF > 0.03' -O v -o H1_bialSNP_MAF.vcf H1_bialSNP.bcf
+```
 	
 	
 Now we will use PLINK to filter SNPs based on a missing genotype threshold. The following code filters out all SNPs with missing call rate exceeding 0.3.
 		
-`plink --vcf H1_bialSNP_MAF.vcf --double-id --allow-extra-chr --set-missing-var-ids @:# --make-bed --geno 0.3 --recode vcf --out H1_bialSNP_MAF_geno`
+```
+plink --vcf H1_bialSNP_MAF.vcf --double-id --allow-extra-chr --set-missing-var-ids @:# --make-bed --geno 0.3 --recode vcf --out H1_bialSNP_MAF_geno
+```
 
 	
 PLINK can also be used to filter highly linked (correlated) SNPs:
 	
-`plink --vcf H1_bialSNP_MAF_geno.vcf --double-id --allow-extra-chr --set-missing-var-ids @:# --make-bed --indep-pairwise 10 10 0.8`
-	
+```
+plink --vcf H1_bialSNP_MAF_geno.vcf --double-id --allow-extra-chr --set-missing-var-ids @:# --make-bed --indep-pairwise 10 10 0.8
+```	
 	
 Now exclude highly linked SNPs (reported in prune.out file from the previuos step):
 	
-`plink --vcf H1_bialSNP_MAF_geno.vcf --double-id --allow-extra-chr --set-missing-var-ids @:# --make-bed --exclude plink.prune.out --recode vcf --out H1_bialSNP_MAF_geno_LD`	
-	
+```
+plink --vcf H1_bialSNP_MAF_geno.vcf --double-id --allow-extra-chr --set-missing-var-ids @:# --make-bed --exclude plink.prune.out --recode vcf --out H1_bialSNP_MAF_geno_LD	
+```	
 	
 This final VCF contains high quality unlinked SNPs. We can use VCFtools to check missing SNP per sample and exclude those samples with high missing data.
 VCFtools can also be used to rename and reorder samples in the final VCF.
@@ -240,5 +248,7 @@ This final VCF can be used in downstream analysis to detect population strcuture
 For instance, PLINK can be used to do a PCA and have a preliminary view of any population structure in the dataset:
 	
 
-`plink --vcf H1_bialSNP_MAF_geno_LD.vcf --double-id --allow-extra-chr --set-missing-var-ids @:# --make-bed --pca --out H1_bialSNP_MAF_geno_LD_pca`
+```
+plink --vcf H1_bialSNP_MAF_geno_LD.vcf --double-id --allow-extra-chr --set-missing-var-ids @:# --make-bed --pca --out H1_bialSNP_MAF_geno_LD_pca
+```
 
