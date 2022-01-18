@@ -33,3 +33,6 @@ On nesi, we need to load ifort.
  module load ifort
  ./i_baypass -gfile BMSB.geno -contrastfile contrast.ecotype -outprefix BMSB_ -nthreads 2
  ```
+
+## 3- interpreting the outputs
+
