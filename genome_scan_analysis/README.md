@@ -44,16 +44,16 @@ As BayPass runs a MCMC analysis we need to perform several independent MCMC runs
 `BMSB__summary_contrast.out` contains posterior mean of the C2 contrast statistics (M_C2), standard deviation of C2 contrast statistics (SD_C2), calibrated estimator of C2 statistics (C2_std) and its corrected p value (log10(1/pval)). We can use the 0.001 p-value threshold (0.1%, recommended in the tutorial) or 0.01 threshold (1%, reported in Olazcuaga et al 2020) as a cut-off for the expected false discovery rate. Any SNP with a p-value (in -log10 scale) higher than this threshold is considered as an outlier. Let's use R to extract the outlier SNPs using the 0.1% p value threshold:
 
 ```
-_#import the BayPass output file and scaffold list_
+_ #import the BayPass output file and scaffold list _
 BMSB.C2=read.table("BMSB_summary_contrast.out",h=T)
-scaffolds = read.table("scaffold_list.txt") _#I previuosly extracted scaffold names from VCF using bash commands: cat H1_bialSNP_MAF_geno_LD_reordered.vcf | grep -v "#" | cut -f1 > scaffold_list.txt_
+scaffolds = read.table("scaffold_list.txt") _ #I previuosly extracted scaffold names from VCF using bash commands: cat H1_bialSNP_MAF_geno_LD_reordered.vcf | grep -v "#" | cut -f1 > scaffold_list.txt _
 BMSB.C2 = as.data.frame(cbind(BMSB.C2, scaffolds))
 
-_#make a simple Manhattan plot to check the distribution of outlier SNPs_
+_ #make a simple Manhattan plot to check the distribution of outlier SNPs _
 plot(BMSB.C2$log10.1.pval.)
 abline(h=3,lty=2) _#0.001 p--value theshold_
 
-_#extract those SNPs with -log10 p value (=q value) > 3_
+_ #extract those SNPs with -log10 p value (=q value) > 3 _
 selected_SNPs = BMSB.C2[BMSB.C2$log10.1.pval. > 3, ]
 write.table(selected_SNPs,"BMSB_C2SNPsBiggerthan3.txt", sep = "\t")
 ```
