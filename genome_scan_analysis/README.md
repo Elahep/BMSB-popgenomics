@@ -15,7 +15,9 @@ population structure) between the two groups of populations specified by the bin
 
 Using the <a href="https://gitlab.com/YDorant/Toolbox/-/blob/master/reshaper_baypass.py" title="reshaper_baypass.py">reshaper_baypass.py</a> script by <a href="https://gitlab.com/YDorant/Toolbox" title="Yann Dorant">Yann Dorant</a> we can convert VCF to the appropriate BayPass genotype file:
 
-`python ./reshaper_baypass.py H1_bialSNP_MAF_geno_LD_reordered.vcf popmap.txt BMSB.geno`
+```
+python ./reshaper_baypass.py H1_bialSNP_MAF_geno_LD_reordered.vcf popmap.txt BMSB.geno
+```
 
 The number of rows in the .geno file is equal to the number of SNPs and the number of columns is twice the number of populations (because we have two alleles for each site). The first number in each pairs of columns represents the number of the copies of the first allele in that population and the second number represents the number of the copies of the alternative allele. 0 indicates no copies or missing alleles.
 
