@@ -23,3 +23,13 @@ We will also need a "contrast file" to assign each population to a binary trait,
 For the BMSB dataset, we have previously reordered individuals in the finel VCF using VCFtools so that we first have our native populations (Japan and China) which are followed by all invasive ones (10 invasive populations):
 
 1 1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+
+
+## 2- running BayPass
+
+On nesi, we need to load ifort.
+
+```
+ module load ifort
+ ./i_baypass -gfile BMSB.geno -contrastfile contrast.ecotype -outprefix BMSB_ -nthreads 2
+ ```
