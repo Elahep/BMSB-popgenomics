@@ -6,7 +6,7 @@ Here we will use the recently developed C2 statistics <a href="https://academic.
 
 ## 1-preparing input files
 
-Using the <a href="https://gitlab.com/YDorant/Toolbox/-/blob/master/reshaper_baypass.py" title="reshaper_baypass.py">reshaper_baypass.py</a> script (by <a href="https://gitlab.com/YDorant/Toolbox" title="Yann Dorant"<Yann Dorant</a> ) we can convert VCF to the appropriate BayPass genotype file:
+Using the <a href="https://gitlab.com/YDorant/Toolbox/-/blob/master/reshaper_baypass.py" title="reshaper_baypass.py">reshaper_baypass.py</a> script by <a href="https://gitlab.com/YDorant/Toolbox" title="Yann Dorant">Yann Dorant</a> we can convert VCF to the appropriate BayPass genotype file:
 
 `python ./H1_bialSNP_MAF_geno_LD.vcf popmap.txt BMSB.geno`
 
