@@ -162,7 +162,9 @@ NAME,...,NAME representing a combination of the following flag names:
 
 By knowing what each flag means (see above), we can edit .bam files, for example we can remove PCR duplicates or filter out unmapped reads:
 
-`samtools view -F 4 -b SRR13005202.bam > SRR13005202_mapped.bam # this new bam only contains mapped reads, if using -f (instead of -F) we will only retain unmapped reads`
+```
+samtools view -F 4 -b SRR13005202.bam > SRR13005202_mapped.bam # this new bam only contains mapped reads, if using -f (instead of -F) we will only retain unmapped reads
+```	
 
 We can also use <a href="http://qualimap.conesalab.org/" title="Qualimap">Qualimap</a> to check the number of reads and mapping quality in each .bam file.
 	
