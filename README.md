@@ -188,15 +188,39 @@ sorted_dedup_204.bam
 .
 ```
 	
+	
 ```
 module load BCFtools
 bcftools mpileup -Ou -f ../BMSB/ref_Hhal10/Hhal10.fa --bam-list bam_list_all.txt --min-MQ 20 --min-BQ 20 | bcftools call -mv -Ob -o calls_all_samples.bcf
 ```
 
-Va
+Variant quality information can be extracted from the output of mpileup using BCFtools. This <a href="https://www.reneshbedre.com/blog/vcf-fields.html" title="tutorial">tutorial</a> explains what each field means.
+	
+```
+bcftools query calls.bcf -f '%FS\t%SOR\t%MQRankSum\t%ReadPosRankSum\t%QD\t%MQ\t%DP\t%QUAL\n' > calls_bcf__FS.SOR.MQRS.RPRS.QD.MQ.DP.QUAL.txt
 
+	##note that in my dataset, I did not have information for some of these fileds. My current dataset only has FS, MQ, DP, QUAL
+```
+	
+Having information about variant information fields, we can produce histograms or report summary statistics for each filed and obtain information to set thresholds for further filtering of variants.
 
 	
+Now using BCFtools we can remove non-biallelic SNPs and indels:
+	
+`bcftools view -m2 -M2 -v snps,indels -O b -o H1_bialSNP.bcf`
+	
+We can also filter SNPs based on a MAF threshold:
+	
+`bcftools filter -i 'MAF > 0.03' -O v -o H1_bialSNP_MAF.vcf H1_bialSNP.bcf`
+	
+	
+Now we will use PLINK to filter SNPs based on a missing genotype threshold. The following code filters out all SNPs with missing call rate exceeding 0.3.
+		
+`plink --vcf H1_bialSNP_MAF.vcf --double-id --allow-extra-chr --set-missing-var-ids @:# --make-bed --geno 0.3 --recode vcf --out H1_bialSNP_MAF_geno`
+
+PLINK can also be used to filter highly linked (correlated) SNPs:
+	
+`plink --vcf H1_bialSNP_MAF.vcf --double-id --allow-extra-chr --set-missing-var-ids @:# --make-bed --indep-pairwise 20 10 0.2 --recode vcf --out H1_bialSNP_MAF_geno_LD`
 	
 
 
