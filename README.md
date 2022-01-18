@@ -220,8 +220,12 @@ Now we will use PLINK to filter SNPs based on a missing genotype threshold. The 
 
 PLINK can also be used to filter highly linked (correlated) SNPs:
 	
-`plink --vcf H1_bialSNP_MAF.vcf --double-id --allow-extra-chr --set-missing-var-ids @:# --make-bed --indep-pairwise 20 10 0.2 --recode vcf --out H1_bialSNP_MAF_geno_LD`
+`plink --vcf H1_bialSNP_MAF_geno.vcf --allow-extra-chr --set-missing-var-ids @:# --make-bed --indep-pairwise 10 10 0.8 --recode vcf --out H1_bialSNP_MAF_geno_LD`
 	
-
-
+	
+This final VCF contains high quality SNPs. We can use VCFtools to check missing SNP per sample and exclude those samples with high missing data.
+VCFtools can also be used to rename and reorder samples in the final VCF.
+	
+PLINK can be used for a quick PCA to have a preliminary view of any population structure in the dataset:
+`plink --vcf H1_bialSNP_MAF_geno_LD.vcf --allow-extra-chr --set-missing-var-ids @:# --make-bed --pca --out H1_bialSNP_MAF_geno_LD_pca`
 
