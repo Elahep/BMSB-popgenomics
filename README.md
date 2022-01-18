@@ -233,8 +233,11 @@ This final VCF contains high quality unlinked SNPs. We can use VCFtools to check
 VCFtools can also be used to rename and reorder samples in the final VCF.
 	
 	
+
 	
-PLINK can be used to do a PCA and have a preliminary view of any population structure in the dataset:
+This final VCF can be used in downstream analysis to detect population strcuture, demographic and invasion history and genome-scan tests.
+	
+For instance, PLINK can be used to do a PCA and have a preliminary view of any population structure in the dataset:
 	
 
 `plink --vcf H1_bialSNP_MAF_geno_LD.vcf --double-id --allow-extra-chr --set-missing-var-ids @:# --make-bed --pca --out H1_bialSNP_MAF_geno_LD_pca`
