@@ -19,5 +19,7 @@ Using the <a href="https://gitlab.com/YDorant/Toolbox/-/blob/master/reshaper_bay
 
 The number of rows in the .geno file is equal to the number of SNPs and the number of columns is twice the number of populations (because we have two alleles for each site). The first number in each pairs of columns represents the number of the copies of the first allele in that population and the second number represents the number of the copies of the alternative allele. 0 indicates no copies or missing alleles.
 
-We will also need a "contrast file" to assign each population to a binary trait, namely "invasive" and "native" in our analysis. The contrast file has one line and n columns, where n denotes the number of sampled populations. In this file, we will allocate native populations to the first group (1) and invasive populations to the second/alternative group (-1). We can also exclude any population from pairwise comparisons by allocating them to the 0 group.
-For the BMSB dataset, we have previously reordered individuals in the finel VCF using VCFtools so that we first have our native populations (Japan and China) which are followed by all invasive ones.
+We will also need a "contrast file" to assign each population to a binary trait, namely "invasive" and "native" in our analysis. The contrast file has one line and n columns (space seperated), where n denotes the number of sampled populations. In this file, we will allocate native populations to the first group (1) and invasive populations to the second/alternative group (-1). We can also exclude any population from pairwise comparisons by allocating them to the 0 group.
+For the BMSB dataset, we have previously reordered individuals in the finel VCF using VCFtools so that we first have our native populations (Japan and China) which are followed by all invasive ones (10 invasive populations):
+
+1 1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
