@@ -235,7 +235,7 @@ VCFtools can also be used to rename and reorder samples in the final VCF.
 	
 
 	
-This final VCF can be used in downstream analysis to detect population strcuture, demographic and invasion history and genome-scan tests.
+This final VCF can be used in downstream analysis to detect population strcuture and invasion history and perform genome-scan tests.
 	
 For instance, PLINK can be used to do a PCA and have a preliminary view of any population structure in the dataset:
 	
