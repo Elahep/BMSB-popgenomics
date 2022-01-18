@@ -64,9 +64,9 @@ We can do different pairwise comparisons using BayPass, for example comparing on
 ```
 ##draw the Venn diagram
 library(ggvenn)
-WWvsAll = read.delim("../for Venn/WWvsInvas_C2SNPsBiggerthan3.txt") ##both Japan and China versus invasive populations
-ChvsAll = read.delim("../for Venn/CHvsInvas_C2SNPsBiggerthan3.txt") ##China versus invasive populations
-JPvsAll = read.delim("../for Venn/JPvsALL_1stRun_C2SNPsBiggerthan3.txt") ##Japan ersus invasive populations
+WWvsAll = read.delim("./WWvsInvas_C2SNPsBiggerthan3.txt") ##both Japan and China versus invasive populations
+ChvsAll = read.delim("./CHvsInvas_C2SNPsBiggerthan3.txt") ##China versus invasive populations
+JPvsAll = read.delim("./JPvsALL_C2SNPsBiggerthan3.txt") ##Japan ersus invasive populations
 x= list(ChJPvsAll=WWvsAll$names, ChvsAll=ChvsAll$names, JPvsAll=JPvsAll$names)
 ggvenn(x, fill_color = c("#00b4d8", "#c1121f", "#fdf0d5"), fill_alpha = 0.5, stroke_size = 0.2, set_name_size = 4, stroke_color = "navy")
 
