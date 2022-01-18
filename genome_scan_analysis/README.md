@@ -73,7 +73,7 @@ ggvenn(x, fill_color = c("#00b4d8", "#c1121f", "#fdf0d5"), fill_alpha = 0.5, str
 #get the list of common SNPs
 library(gplots)
 common_snps = venn(x, show.plot = FALSE)
-common_snps_list = attributes(common_snps)$intersections$`ChJPvsAll:ChvsAll:JPvsAll`
+common_snps_list = attributes(common_snps)$intersections$`WwvsAll:ChvsAll:JPvsAll`
 write.table(common_snps_list, "BayPass_3comparisons_commonSNPs.txt", sep = "\t")
 ```
 
