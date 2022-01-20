@@ -48,7 +48,7 @@ As BayPass runs a MCMC analysis we need to perform several independent MCMC runs
 ```
 ##import the BayPass output file and scaffold list
 BMSB.C2=read.table("BMSB_summary_contrast.out",h=T)
-scaffolds = read.table("scaffold_list.txt") ##I previuosly extracted scaffold names from VCF using bash commands: cat H1_bialSNP_MAF_geno_LD_reordered.vcf | grep -v "#" | cut -f1 > scaffold_list.txt
+scaffolds = read.table("scaffold_list.txt") ##I previuosly extracted scaffold names from VCF using bash commands: cat H1_bialSNP_MAF_geno_LD_reordered.vcf | grep -v "#" | cut -f3 > scaffold_list.txt
 BMSB.C2 = as.data.frame(cbind(BMSB.C2, scaffolds))
 
 ##make a simple Manhattan plot to check the distribution of outlier SNPs
