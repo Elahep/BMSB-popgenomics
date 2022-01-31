@@ -88,7 +88,7 @@ SRR13005202.2   145     NW_014466990.1  295431  56      61M2D84M        NW_01446
   
 
 In order to do downstream analysis (e.g. SNP calling) we need sorted BAM files (Binary Alignment Map) and mark duplicates to be further discarded by the SNP caller. We can  use SAMtools or GATK to sort SAM files and mark duplicates. 
-If using SAMtools these steps should be followed:
+If using SAMtools:
 	
 ```
 ##first convert sam to bam and sort by name:
@@ -115,8 +115,17 @@ do
 samtools markdup -@ 8 coordSort_${i}.bam markdup_${i}.bam
 done
 ``` 
+or simply piping throgh:
 	
-If using GATK the procedure is simpler:
+```
+for i in {208..306};
+do
+samtools fixmate -@ 8 -m SRR${i}.sam.gz - | samtools sort -@ 8 -O BAM | samtools markdup -@ 8 - markdup_${i}.bam
+done
+```
+
+
+If using GATK:
 	
 ```
 module load GATK
