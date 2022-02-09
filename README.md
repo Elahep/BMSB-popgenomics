@@ -219,7 +219,7 @@ Having information about variant information fields, we can produce histograms o
 Now using BCFtools we can remove non-biallelic SNPs and indels:
 	
 ```
-bcftools view -m2 -M2 -v snps,indels -O b -o H1_bialSNP.bcf
+bcftools view -m2 -M2 -v snps,indels -O b -o H1_bialSNP.bcf INPUT.bcf
 ```
 	
 We can also filter SNPs based on a MAF threshold:
