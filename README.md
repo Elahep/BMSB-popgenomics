@@ -236,7 +236,7 @@ plink --vcf H1_bialSNP_MAF.vcf --double-id --allow-extra-chr --set-missing-var-i
 ```
 
 	
-PLINK can also be used to filter highly linked (correlated) SNPs:
+PLINK can also be used to filter highly linked (correlated) SNPs. We first need to detect highly correlated SNPs in 10 kb windows:
 	
 ```
 plink --vcf H1_bialSNP_MAF_geno.vcf --double-id --allow-extra-chr --set-missing-var-ids @:# --make-bed --indep-pairwise 10 10 0.8
