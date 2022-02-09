@@ -216,10 +216,10 @@ bcftools query calls.bcf -f '%FS\t%SOR\t%MQRankSum\t%ReadPosRankSum\t%QD\t%MQ\t%
 Having information about variant information fields, we can produce histograms or report summary statistics for each filed and obtain information to set thresholds for further filtering of variants.
 
 	
-Now using BCFtools we can remove non-biallelic SNPs and indels:
+Now using BCFtools we can remove all indels and non-biallelic SNPs:
 	
 ```
-bcftools view -m2 -M2 -v snps,indels -O b -o H1_bialSNP.bcf INPUT.bcf
+bcftools view -m2 -M2 -v snps -O b -o H1_bialSNP.bcf INPUT.bcf
 ```
 	
 We can also filter SNPs based on a MAF threshold:
