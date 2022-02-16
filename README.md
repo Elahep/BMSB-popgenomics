@@ -225,7 +225,7 @@ bcftools view -m2 -M2 -v snps -O b -o H1_bialSNP.bcf INPUT.bcf
 We can also filter SNPs based on a MAF threshold:
 	
 ```
-bcftools filter -i 'MAF > 0.03' -O v -o H1_bialSNP_MAF.vcf H1_bialSNP.bcf
+bcftools filter -i 'MAF > 0.01' -O v -o H1_bialSNP_MAF.vcf H1_bialSNP.bcf
 ```
 	
 	
