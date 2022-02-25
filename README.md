@@ -225,7 +225,7 @@ bcftools view -m2 -M2 -v snps -O b -o H1_bialSNP.bcf INPUT.bcf
 We can also filter SNPs based on a MAF threshold:
 	
 ```
-bcftools filter -i 'MAF > 0.01' -O v -o H1_bialSNP_MAF.vcf H1_bialSNP.bcf
+bcftools filter -i 'MAF > 0.05' -O v -o H1_bialSNP_MAF.vcf H1_bialSNP.bcf
 ```
 	
 	
@@ -236,10 +236,10 @@ plink --vcf H1_bialSNP_MAF.vcf --double-id --allow-extra-chr --set-missing-var-i
 ```
 
 	
-PLINK can also be used to filter highly linked (correlated) SNPs. We first need to detect highly correlated SNPs in 10 kb windows:
+PLINK can also be used to filter highly linked (correlated) SNPs. We first need to detect highly correlated SNPs in 50 kb windows:
 	
 ```
-plink --vcf H1_bialSNP_MAF_geno.vcf --double-id --allow-extra-chr --set-missing-var-ids @:# --make-bed --indep-pairwise 10 10 0.8
+plink --vcf H1_bialSNP_MAF_geno.vcf --double-id --allow-extra-chr --set-missing-var-ids @:# --make-bed --indep-pairwise 50 5 0.2
 ```	
 	
 Now exclude highly linked SNPs (reported in prune.out file from the previuos step):
