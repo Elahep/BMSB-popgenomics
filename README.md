@@ -115,7 +115,7 @@ do
 samtools markdup -@ 8 coordSort_${i}.bam markdup_${i}.bam
 done
 ``` 
-or simply piping through:
+or piping through:
 	
 ```
 for i in {208..306};
