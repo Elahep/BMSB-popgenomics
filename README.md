@@ -186,7 +186,7 @@ qualimap multi-bamqc -d Qualimap_bamList.txt -r  ##the .txt file contains two co
 ## Variant calling
 
 We will use <a href="https://samtools.github.io/bcftools/howtos/variant-calling.html" title="bcftools mpileup">bcftools mpileup</a> to call variants. 
-We will use default parameters and only include sites with minimum mapping quality (--min-MQ) and minimum base quality (--min-BQ) higher than 20.
+We will use default parameters and only include sites with minimum mapping quality (--min-MQ) and minimum base quality (--min-BQ) of 20.
 bcftools mpileup needs the list of all .bam files:
 	
 ```
