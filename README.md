@@ -229,7 +229,7 @@ bcftools filter -i 'MAF > 0.05' -O v -o H1_bialSNP_MAF.vcf H1_bialSNP.bcf
 ```
 	
 	
-Now we will use PLINK to filter SNPs based on a missing genotype threshold. The following code filters out all SNPs with missing call rate exceeding 0.1.
+Now we will use PLINK to filter SNPs based on a missing genotype threshold. The following code filters out all SNPs with missing call rate exceeding 0.1, allowing only 1% missing SNPs in the entire dataset.
 		
 ```
 plink --vcf H1_bialSNP_MAF.vcf --double-id --allow-extra-chr --set-missing-var-ids @:# --make-bed --geno 0.1 --recode vcf --out H1_bialSNP_MAF_geno
