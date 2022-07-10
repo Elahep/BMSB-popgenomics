@@ -147,7 +147,8 @@ x_mainvsrun3 <- ggscatter(x_runs, x = "main_run", y = "replicate_3",
 
 ggarrange(o_mainvsrun1,o_mainvsrun2,o_mainvsrun3,
           x_mainvsrun1,x_mainvsrun2,x_mainvsrun3,ncol = 3, nrow = 2)
-          
+```
+
           
 ## 4- Choosing candidate SNPs
 
