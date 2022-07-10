@@ -61,7 +61,7 @@ Another step in checking the reliability of our results is to assess convergence
 ##calculating FMD
 source("./baypass_utils.R")
 
-mat0 <- as.matrix(read.table("BMSB_mat_omega.out"))   ##the original run
+mat0 <- as.matrix(read.table("BMSB_mat_omega.out"))   ##main run
 mat1 <- as.matrix(read.table("MCMC convergence check/run1/BMSB_run1_mat_omega.out"))   ##first replicate
 mat2<- as.matrix(read.table("MCMC convergence check/run2/BMSB_run2_mat_omega.out"))  ##second replicate
 mat3 <- as.matrix(read.table("MCMC convergence check/run3/BMSB_run3_mat_omega.out"))  ##third replicate
