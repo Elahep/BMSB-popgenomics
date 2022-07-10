@@ -54,6 +54,8 @@ abline(h=1)
 ![image](https://user-images.githubusercontent.com/13001264/178163848-e74149c4-0829-46e3-a40e-9130264a6873.png)
 
 
+Another step in checking the reliability of our results is to assess convergence and the reproducibility of the MCMC estimates. In the previuos part, we recommended running BayPass for three more independent runs using different seeds. Here, we will calculate Forstner and Moonen distance (FMD) between the Ω matrix of these independent runs using the R function fmd.dist (distributed within the BayPass package). Small FMD distance denotes convergence of the MCMC chains. We can also plot correlation between the Ω parameter and the XtX statistic across different independent BayPass runs to confirm the convergence of MCMC chains in each run.
+
 
 ## 4- Interpreting the outputs
 
