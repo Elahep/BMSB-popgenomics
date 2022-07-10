@@ -41,9 +41,15 @@ On nesi, we need to load ifort.
 As BayPass runs a MCMC analysis we need to perform several independent MCMC runs (e.g., 3-5), using different seeds. We then need to compare the estimates of parameters such as Ω or statistics such as BF or C2 across various runs to empirically check the convergence of chains.
 
 
-## 3- Interpreting the outputs
+## 3- Sanity check
 
-`BMSB__summary_contrast.out` contains posterior mean of the C2 contrast statistics (M_C2), standard deviation of C2 contrast statistics (SD_C2), calibrated estimator of C2 statistics (C2_std) and its corrected p value (log10(1/pval)). We can use the 0.001 p-value threshold (0.1%, recommended in the tutorial) or 0.01 threshold (1%, reported in Olazcuaga et al 2020) as a cut-off for the expected false discovery rate. Any SNP with a p-value (in -log10 scale) higher than this threshold is considered as an outlier. Let's use R to extract the outlier SNPs using the 0.1% p value threshold:
+Before choosing the candidate SNPs, we must check the behaviour of p-values to make sure our results are not affected by problems associated with multiple testing. We will check the distribution of p-values using a histogram. A well-behaved p-value histogram must be close to uniform for higher p-values. See this <a href="http://varianceexplained.org/statistics/interpreting-pvalue-histogram/" title="tutorial"tutorial/a> 
+
+## 4- Interpreting the outputs
+
+`BMSB__summary_contrast.out` contains posterior mean of the C2 contrast statistics (M_C2), standard deviation of C2 contrast statistics (SD_C2), calibrated estimator of C2 statistics (C2_std) and its corrected p value (log10(1/pval)). We can use the 0.001 p-value threshold (0.1%, recommended in the tutorial) or 0.01 threshold (1%, reported in Olazcuaga et al 2020) as a cut-off for considering significantly differentiated outlier SNPs. Any SNP with a p-value (in -log10 scale) higher than this threshold is considered as an outlier. Additionally, we need to calculate false discovery rate and control for multiple testing. To do that, we will calculate q-value for each inividual SNP and will consider SNPs with q-values < 0.1 (10% false discovery rate) as the best candidates for being subject to selective sweeps.
+
+Let's use R to extract the outlier SNPs using the 0.1% p value threshold and calculate q-value for choosing the candidate SNPs:
 
 ```
 ##import the BayPass output file and scaffold list
@@ -55,9 +61,22 @@ BMSB.C2 = as.data.frame(cbind(BMSB.C2, scaffolds))
 plot(BMSB.C2$log10.1.pval.)
 abline(h=3,lty=2) _#0.001 p--value theshold_
 
-##extract those SNPs with -log10 p value (=q value) > 3
-selected_SNPs = BMSB.C2[BMSB.C2$log10.1.pval. > 3, ]
-write.table(selected_SNPs,"BMSB_C2SNPsBiggerthan3.txt", sep = "\t")
+##calculate q-value for each SNP and choose SNPs with q-values < 0.1
+library(qvalue)
+pvalues <- as.data.frame(10^-BMSB.C2[,6]) ##convert -log p values to normal p values
+BMSB.C2 <- cbind(pvalues,BMSB.C2)  ##append it to the df
+pvalues <- as.vector(BMSB.C2$`10^-BMSB.C2[, 6]`)
+qval <- qvalue(p = pvalues)
+plot(qval$qvalues)
+abline(h=0.1)  ##qvalues < 0.1 are highly sig.
+
+qvalues = as.data.frame(qval$qvalues)
+
+BMSB.C2 <- cbind(ChvsAll.C2,qvalues)
+
+##extract those SNPs with q value < 0.1
+selected_SNPs = BMSB.C2[BMSB.C2$qvalues < 0.1, ]
+write.table(selected_SNPs,"BMSB_C2SNPs_qval01.txt", sep = "\t")
 ```
 
 
@@ -80,3 +99,8 @@ write.table(common_snps_list, "BayPass_3comparisons_commonSNPs.txt", sep = "\t")
 ```
 
 Annotating the outlier SNPs can tell us potential genes/proteins associated with the invasive status of our studied species.
+
+
+
+
+
