@@ -43,7 +43,7 @@ As BayPass runs a MCMC analysis we need to perform several independent MCMC runs
 
 ## 3- Sanity check
 
-Before choosing the candidate SNPs, we must check the behaviour of p-values to make sure our results are not affected by problems associated with multiple testing. We will check the distribution of p-values using a histogram. A well-behaved p-value histogram must be close to uniform for higher p-values. See this <a href="http://varianceexplained.org/statistics/interpreting-pvalue-histogram/" title="tutorial">tutorial</a> 
+Before choosing the candidate SNPs, we must check the behaviour of p-values to make sure our results are not affected by problems associated with multiple testing. We will check the distribution of p-values using a histogram. A well-behaved p-value histogram must be close to uniform for higher p-values. Check this <a href="http://varianceexplained.org/statistics/interpreting-pvalue-histogram/" title="tutorial">tutorial</a> to see what kinds of distributions you can expect in your p-value histograms. 
 
 ## 4- Interpreting the outputs
 
