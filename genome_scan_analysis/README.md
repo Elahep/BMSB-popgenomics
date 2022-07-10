@@ -57,7 +57,99 @@ abline(h=1)
 Another step in checking the reliability of our results is to assess convergence and the reproducibility of the MCMC estimates. In the previuos part, we recommended running BayPass for three more independent runs using different seeds. Here, we will calculate Forstner and Moonen distance (FMD) between the Ω matrix of these independent runs using the R function fmd.dist (distributed within the BayPass package). Small FMD distance denotes convergence of the MCMC chains. We can also plot correlation between the Ω parameter and the XtX statistic across different independent BayPass runs to confirm the convergence of MCMC chains in each run.
 
 
-## 4- Interpreting the outputs
+```
+##calculating FMD
+source("./baypass_utils.R")
+
+mat0 <- as.matrix(read.table("BMSB_mat_omega.out"))   ##the original run
+mat1 <- as.matrix(read.table("MCMC convergence check/run1/BMSB_run1_mat_omega.out"))   ##first replicate
+mat2<- as.matrix(read.table("MCMC convergence check/run2/BMSB_run2_mat_omega.out"))  ##second replicate
+mat3 <- as.matrix(read.table("MCMC convergence check/run3/BMSB_run3_mat_omega.out"))  ##third replicate
+
+
+FMD01 <- fmd.dist(mat0,mat1)
+FMD02 <- fmd.dist(mat0,mat2)
+FMD03 <- fmd.dist(mat0,mat3)
+
+
+##correlation plots
+
+library("ggpubr")
+library(plyr)
+
+run0_omega <- read.table("../BMSB_summary_lda_omega.out", header = TRUE)
+run1_omega <- read.table("./run1/BMSB_run1_summary_lda_omega.out", header = TRUE)
+run2_omega <- read.table("./run2/BMSB_run2_summary_lda_omega.out", header = TRUE)
+run3_omega <- read.table("./run3/BMSB_run3_summary_lda_omega.out", header = TRUE)
+
+o_runs <- as.data.frame(cbind(run0_omega[,5], run1_omega[,5], run2_omega[,5], run3_omega[,5]))
+
+o_runs <- rename(o_runs, c("V1"="main_run", "V2"="replicate_1", "V3"="replicate_2",
+                       "V4"="replicate_3"))
+
+o_mainvsrun1 <- ggscatter(o_runs, x = "main_run", y = "replicate_1", 
+          add = "reg.line", conf.int = TRUE, 
+          cor.coef = TRUE, cor.method = "pearson",
+          xlab = "main run omega", ylab = "replicate_1 omega") +
+          geom_point(size = 2) +
+         theme(axis.title.x = element_text(size = 10), axis.text.x = element_text(size = 10)) +
+         theme(axis.title.y = element_text(size = 10), axis.text.y = element_text(size = 10)) 
+
+o_mainvsrun2 <- ggscatter(o_runs, x = "main_run", y = "replicate_2", 
+                        add = "reg.line", conf.int = TRUE, 
+                        cor.coef = TRUE, cor.method = "pearson",
+                        xlab = "main run omega", ylab = "replicate_2 omega") +
+                        geom_point(size = 2) +
+                        theme(axis.title.x = element_text(size = 10), axis.text.x = element_text(size = 10)) +
+                        theme(axis.title.y = element_text(size = 10), axis.text.y = element_text(size = 10)) 
+
+o_mainvsrun3 <- ggscatter(o_runs, x = "main_run", y = "replicate_3", 
+                        add = "reg.line", conf.int = TRUE, 
+                        cor.coef = TRUE, cor.method = "pearson",
+                        xlab = "main run omega", ylab = "replicate_3 omega") +
+                        geom_point(size = 2) +
+   theme(axis.title.x = element_text(size = 10), axis.text.x = element_text(size = 10)) +
+   theme(axis.title.y = element_text(size = 10), axis.text.y = element_text(size = 10)) 
+
+run0_xtx <- read.table("../BMSB_summary_pi_xtx.out", header = TRUE)
+run1_xtx <- read.table("./run1/BMSB_run1_summary_pi_xtx.out", header = TRUE)
+run2_xtx <- read.table("./run2/BMSB_run2_summary_pi_xtx.out", header = TRUE)
+run3_xtx <- read.table("./run3/BMSB_run3_summary_pi_xtx.out", header = TRUE)
+
+x_runs <- as.data.frame(cbind(run0_xtx[,4], run1_xtx[,4], run2_xtx[,4], run3_xtx[,4]))
+
+x_runs <- rename(x_runs, c("V1"="main_run", "V2"="replicate_1", "V3"="replicate_2",
+                           "V4"="replicate_3"))
+
+x_mainvsrun1 <- ggscatter(x_runs, x = "main_run", y = "replicate_1", 
+                          add = "reg.line", conf.int = TRUE, 
+                          cor.coef = TRUE, cor.method = "pearson",
+                          xlab = "main run xtx", ylab = "replicate_1 xtx") +
+  geom_point(size = 2) +
+  theme(axis.title.x = element_text(size = 10), axis.text.x = element_text(size = 10)) +
+  theme(axis.title.y = element_text(size = 10), axis.text.y = element_text(size = 10)) 
+
+x_mainvsrun2 <- ggscatter(x_runs, x = "main_run", y = "replicate_2", 
+                          add = "reg.line", conf.int = TRUE, 
+                          cor.coef = TRUE, cor.method = "pearson",
+                          xlab = "main run xtx", ylab = "replicate_2 xtx") +
+  geom_point(size = 2) +
+  theme(axis.title.x = element_text(size = 10), axis.text.x = element_text(size = 10)) +
+  theme(axis.title.y = element_text(size = 10), axis.text.y = element_text(size = 10)) 
+
+x_mainvsrun3 <- ggscatter(x_runs, x = "main_run", y = "replicate_3", 
+                          add = "reg.line", conf.int = TRUE, 
+                          cor.coef = TRUE, cor.method = "pearson",
+                          xlab = "main run xtx", ylab = "replicate_3 xtx") +
+  geom_point(size = 2) +
+  theme(axis.title.x = element_text(size = 10), axis.text.x = element_text(size = 10)) +
+  theme(axis.title.y = element_text(size = 10), axis.text.y = element_text(size = 10)) 
+
+ggarrange(o_mainvsrun1,o_mainvsrun2,o_mainvsrun3,
+          x_mainvsrun1,x_mainvsrun2,x_mainvsrun3,ncol = 3, nrow = 2)
+          
+          
+## 4- Choosing candidate SNPs
 
 `BMSB__summary_contrast.out` contains posterior mean of the C2 contrast statistics (M_C2), standard deviation of C2 contrast statistics (SD_C2), calibrated estimator of C2 statistics (C2_std) and its corrected p value (log10(1/pval)). We can use the 0.001 p-value threshold (0.1%, recommended in the tutorial) or 0.01 threshold (1%, reported in Olazcuaga et al 2020) as a cut-off for considering significantly differentiated outlier SNPs. Any SNP with a p-value (in -log10 scale) higher than this threshold is considered as an outlier. Additionally, we need to calculate false discovery rate and control for multiple testing. To do that, we will calculate q-value for each inividual SNP and will consider SNPs with q-values < 0.1 (10% false discovery rate) as the best candidates for being subject to selective sweeps.
 
