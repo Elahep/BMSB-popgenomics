@@ -31,7 +31,7 @@ Under the header lines of the _Database & Genomes_ section in the config file ad
 mygenome.genome : BMSB
 ```
 
-Now we need to copy the genome assembly (fasta file) and associated genome annotation (GFF file) into the _mygenome_ directory that we created in the first step.
+Now we need to copy the genome assembly (fasta file) and associated genome annotation (GFF file) into the _mygenome_ directory that we created in the first step. You must rename them to "mygenome.fa" and "genes.gff".
 
 Now we are ready to create our own snpEff database. Go back to the _snpEff_analysis_ directory and run the following:
 
