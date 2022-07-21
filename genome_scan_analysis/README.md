@@ -6,7 +6,7 @@ Here we will use the recently developed C2 statistics <a href="https://academic.
 
 ## Summary of the approach
 For analysing loci associated with a binary trait such as invasive vs. non-invasive, we will use the contrast analysis in BayPass v2.3.
-For such an analysis, the new version of BayPass has developed a nonparametric counterpart for the association model implemented in older versions of BayPass.
+For this analysis, the new version of BayPass has developed a nonparametric counterpart for the association model implemented in older versions of BayPass.
 This new nonparametric model relies on a contrast statistic, C2, that compares the standardized population allele frequencies (i.e., allele frequencies corrected for the
 population structure) between the two groups of populations specified by the binary covariable of interest. However, previous versions of BayPass relied on paramteric models to calculate Bayes Factor (BF). Using the core model of Baypass, we can simultaneously estimate both BF and C2. In this tutorial we will be estimating C2.
  
