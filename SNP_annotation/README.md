@@ -36,7 +36,7 @@ Now we need to copy the genome assembly (fasta file) and associated genome annot
 Now we are ready to create our own snpEff database. Go back to the _snpEff_analysis_ directory and run the following:
 
 ```
-$ snpEff build -c snpEff.config -gff3 -v mygenome > snpEff.stdout 2> snpEff.stderr
+snpEff build -c snpEff.config -gff3 -v mygenome > snpEff.stdout 2> snpEff.stderr
 ```
 
 ## Runnig SnpEff
