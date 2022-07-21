@@ -43,7 +43,7 @@ $ snpEff build -c snpEff.config -gff3 -v mygenome > snpEff.stdout 2> snpEff.stde
 
 Now we are all sorted to run snpEff and do SNP annotation.
 
-Let's do the annotation on the BayPass outlier SNPs that were obtained from comparing Japan and China agianst all invasive populations.
+Let's do the annotation on the BayPass outlier SNPs that were obtained from comparing China agianst all invasive populations.
 
 We first need to extract the outlier SNPs from our main VCF file which includes all SNPs. By having the list of outliers in a txt file we can use VCFtools to extract the outlier SNPs:
 
