@@ -54,7 +54,11 @@ bedtools flank -i BayPass_outliers.bed -g Hhal20.txt -b 10000 | cut -f1-3 > BayP
 We can use Genome Browser (UCSC) to extract exons or genes around outlier SNPs using the bed file created above. We will use the <a href="https://genome.ucsc.edu/cgi-bin/hgTables?hgsid=1427809609_lBBYXSD3L9xru48CQoF5X7Eoar06" title="Table Browser tool" >Table Browser tool</a>.  
 
 
+
+
 ![image](https://user-images.githubusercontent.com/13001264/184762373-5015cfea-f3d2-41ab-960e-5253f073155f.png)
+
+
 
 
 
@@ -79,7 +83,11 @@ cat snpEff_genes.txt | grep -v "#" | cut -f3 | uniq > BMSB_FullData_transIDfroms
 In order to get the DNA sequences associated with all transcript IDs obtained from snpEff, we can use the <a href="https://www.ncbi.nlm.nih.gov/sites/batchentrez" title="Batch Entrez tool" >Batch Entrez tool</a> of NCBI. We need to choose the *nucleotide* database and upload our full transcript ID list and export .fasta file format containing the DNA sequences associated with the transcript IDs. 
 
 
+
+
 ![image](https://user-images.githubusercontent.com/13001264/184761835-18e60d0d-5609-4cc3-a860-f2a998cdb56f.png)
+
+
 
 
 
@@ -108,7 +116,6 @@ Using the above command, InterProScan will output multiple files (such as .gff3,
 
 ```
 grep -w "GO" FullData_batchentrez.fasta.tsv | cut -f1,14 > FullData_GOlist.txt 
-
 ```
 
 The resulting file contains two columns: in the first column we have transcript IDs of all of our genes (candidate and non-candidate) and in the second column we have GO terms associated with each transcript ID. Note that multiple GO terms in each row are separated by "|".
