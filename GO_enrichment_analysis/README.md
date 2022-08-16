@@ -114,17 +114,63 @@ grep -w "GO" FullData_batchentrez.fasta.tsv | cut -f1,14 > FullData_GOlist.txt
 The resulting file contains two columns: in the first column we have transcript IDs of all of our genes (candidate and non-candidate) and in the second column we have GO terms associated with each transcript ID. Note that multiple GO terms in each row are separated by "|".
 
 
-Now we have all the input files ready to run Go term enrichment analysis using topGo in R:
+Now we have all the input files ready to run Go term enrichment analysis using topGo in R. Here I have used the weight01 algorithm and Fisher's exact test, and retained enriched GO terms with a p-value of < 0.05.
 
 
 ```
+library(topGO)
 
 
+##import tab delimited file of all genes and their GO terms
+geneID2GO <- readMappings("./InterProScan/FullData_GOlist.txt")  
+geneID2GO$XM_014420108.2  #check the GO terms for some of the transcript IDs
+str(head(geneID2GO))
+
+geneNames <- names(geneID2GO)
+head(geneNames)
+
+##import transcript IDs of outlier SNPs:
+interesting_genes = read.table("./outliers_transcriptIDs.txt")
+myInterestingGenes <- as.vector(interesting_genes$V1) ##import the vector of your genes of interest. This should be just the ID of the genes.
+geneList <- factor(as.integer(geneNames %in% myInterestingGenes))
+names(geneList) <- geneNames
+str(geneList)
+
+##create a topGo object for the "Biological Processes" terms (BP):
+GOdata_BP <- new("topGOdata", ontology = "BP", allGenes = geneList, annot = annFUN.gene2GO, gene2GO = geneID2GO) 
+##get the list of significant genes
+sig_genes = sigGenes(GOdata_BP) 
+## return the GO graph
+graph(GOdata_BP)
+##GO enrichment test
+resultFisher <- runTest(GOdata_BP, algorithm="weight01", statistic="fisher")  ##resultFisher is a TopGoresult objetc. You can see p values in this object using the "score" function: 
+resultFisher  #this shows how many GO terms are significant
+allRes <- GenTable(GOdata_BP, raw.p.value = resultFisher, classicFisher = resultFisher, ranksOf = "classicFisher", Fis = resultFisher, topNodes = length(resultFisher@score)) 
+allRes
+write.table(allRes, "GOresults_BP.txt", sep = "\t")  ##save the results for the BP terms.
 
 
+##now we can do GO enrichment term analysis using different ontology. For example, we will analyze for the "Molecular Function" terms here (MF):
+GOdata_MF <- new("topGOdata", ontology = "MF", allGenes = geneList, annot = annFUN.gene2GO, gene2GO = geneID2GO)
+GOdata_MF
 
+##GO enrichment test
+resultFisher_MF <- runTest(GOdata_MF, algorithm="weight01", statistic="fisher")
+resultFisher_MF  #this shows how many GO terms are significant
+allRes_MF <- GenTable(GOdata_MF, raw.p.value = resultFisher_MF, classicFisher = resultFisher_MF, ranksOf = "classicFisher", Fis = resultFisher_MF, topNodes = length(resultFisher_MF@score)) 
+allRes_MF
+write.table(allRes_MF, "GOresults_MF.txt", sep = "\t")
 
+##Similarly, we will do the analysis for the "Cellular Component" terms as well (CC):
+GOdata_CC <- new("topGOdata", ontology = "CC", allGenes = geneList, annot = annFUN.gene2GO, gene2GO = geneID2GO)
+GOdata_CC
+resultFisher_CC <- runTest(GOdata_CC, algorithm="weight01", statistic="fisher")
+resultFisher_CC  #this shows how many GO terms are significant
+allRes_CC <- GenTable(GOdata_CC, raw.p.value = resultFisher_CC, classicFisher = resultFisher_CC, ranksOf = "classicFisher", Fis = resultFisher_CC, topNodes = length(resultFisher_CC@score)) 
+allRes_CC
+write.table(allRes_CC, "GOresults_CC.txt", sep = "\t")
 
+```
 
-
+Results of GO enrichment analysis of the BMSB outlier SNPs and candidate genes showed enriched pathways in a range of molecular functions, including oxidoreductase activity (GO:0016491), odorant binding (GO:0005549) and protein binding (GO:0005515), as well as in biological processes such as cellular protein modification (GO:0006464). I did not obtain any significant GO terms for the Cellular Component analysis.
 
