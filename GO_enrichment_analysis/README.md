@@ -160,8 +160,6 @@ write.table(allRes, "GOresults_BP.txt", sep = "\t")  ##save the results for the 
 ##now we can do GO enrichment term analysis using different ontology. For example, we will analyze for the "Molecular Function" terms here (MF):
 GOdata_MF <- new("topGOdata", ontology = "MF", allGenes = geneList, annot = annFUN.gene2GO, gene2GO = geneID2GO)
 GOdata_MF
-
-##GO enrichment test
 resultFisher_MF <- runTest(GOdata_MF, algorithm="weight01", statistic="fisher")
 resultFisher_MF  #this shows how many GO terms are significant
 allRes_MF <- GenTable(GOdata_MF, raw.p.value = resultFisher_MF, classicFisher = resultFisher_MF, ranksOf = "classicFisher", Fis = resultFisher_MF, topNodes = length(resultFisher_MF@score)) 
