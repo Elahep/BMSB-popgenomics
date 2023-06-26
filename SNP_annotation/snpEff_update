@@ -1,0 +1,190 @@
+We tried to manually build a reference database using the latest version of snpEff, however, it kept failing when we followed the procedures I used in 2021 and mentioned in this repository.
+Rebecca could figure out how to solve this issue, and this is the detailed procedure she used:
+
+####################
+SNPs ANNOTATION
+
+# https://pcingola.github.io/SnpEff/se_build_db/
+# https://github.com/Elahep/BMSB-popgenomics/tree/main/SNP_annotation
+# snpEff is a sofware used for SNPs annotation and prediction of their effects on genes and proteins. It checks whether a SNP is located in a gene. Direct use of VCF files (containing either full dataset or just outliers) as an input for snpEff, is possible. 
+# snpEff needs a database to perform genomic annotations. There are pre-built databases for thousands of genomes. However, as we study non-model species, the annotation information of our studied species is not availabe in snpEff and we need to manually add our database to the program.
+
+# snpEff can be installed through bioconda:
+
+$ conda install -c bioconda snpeff
+
+### Building SnpEff database for non-model species - Popillia japonica
+
+# We need to custom the config file with genomic information of our species of interest. 
+# We need to find the main config file of snpEff (snpEff.config), copy it to our working directory and then add our species genome (I would recommend performing the analysis in the folder where snpEff is installed)
+# In this directory we need to create a couple of more directories and copy the config file:
+# go to directory where snpEff is installed:
+
+$ find ~ -name snpEff
+~/miniconda3/pkgs/snpeff-5.1-hdfd78af_2/share/snpeff-5.1-2
+$ cd ~/miniconda3/pkgs/snpeff-5.1-hdfd78af_2/share/snpeff-5.1-2
+$ mkdir data
+$ cd data
+$ mkdir mygenome     
+$ mkdir genome
+$ cd ../
+$ find ~ -name snpEff.config
+/home/rf/miniconda3/pkgs/snpeff-5.1-hdfd78af_2/share/snpeff-5.1-2/snpEff.config   # if you're working in the directory where snpEff is installed, you don't have to search for it, you'll find it there. 
+$ cp /home/rf/miniconda3/pkgs/snpeff-5.1-hdfd78af_2/share/snpeff-5.1-2/snpEff.config data/
+$ find ~ -name snpEff.jar                                                         # same as for snpEff.config
+$ cp snpEff.jar data/
+
+# In 'mygenome' folder you need to have:
+# genes.gff and/or genes.gtf file/s
+# cds.fa file
+# protein.fa file 
+
+$ conda install -c bioconda gffread
+$ gffread PJ.gff3 -T -o PJ.gtf
+$ mv PJ.gtf genes.gtf
+
+# In 'genomes' folder you need to have
+# mygenome.fa --> fasta file of reference genome 
+
+# Change the name of your files with the ones as indicated above. (If you don't have cds and/or protein file, there should be an option to not include them in the dataset building, but I'm not sure this option was maintained in the snpEff.v5)
+
+$ nano snpEff.config
+
+# Now check the config file using nano. Make sure the path to data directory in the config file is:
+
+#---
+data.dir = /home/rf/miniconda3/pkgs/snpeff-5.1-hdfd78af_2/share/snpeff-5.1-2/data          #complete path to data/
+
+#--- 
+
+# Then, vnder the header lines of the Database & Genomes section in the config file add the genome of your #species of interest:
+# in particular it has to be added in the following position  ###here  --> but in general every github adds in in different positions (for me this position worked)
+
+#-------------------------------------------------------------------------------
+# Databases & Genomes
+#
+# One entry per genome version. 
+#
+# For genome version 'ZZZ' the entries look like
+#	ZZZ.genome              : Real name for ZZZ (e.g. 'Human')
+#	ZZZ.reference           : [Optional] Comma separated list of URL to site/s where information for building ZZZ database was extracted.
+#	ZZZ.chrName.codonTable  : [Optional] Define codon table used for chromosome 'chrName' (Default: 'codon.Standard')
+#
+#-------------------------------------------------------------------------------
+
+# my genome                                                             ###here
+mygenome.genome : mygenome
+
+#---
+# Non-standard Databases
+#---
+
+## BUILDING snpEff DATABASE WITH .gtf file and -noGenome option --> use of .gtf file is recommended
+$ java -jar snpEff.jar build -gtf22 -noGenome -v mygenome
+$ snpEff build -c snpEff.config -gtf22 -noGenome -v mygenome > snpEff.stdout 2> snpEff.stderr
+
+#check snpEff.stderr if any error occur
+$ cat snpEff.stderr
+# snpEff.stdout should look something like that
+$ head snpEff.stdout
+#---
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*++++++++++++++++++++
+	++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	+++++++++++++++++++++++++++++++++++++++++++++++++++++*++++++++++++++++++++++++++++++++++++++++++++++
+#---
+
+# At the beginning I built a database with a .gtf file, then I tried with .gff file and continued my analysis with it
+
+$ java -jar snpEff.jar build -gff3 -noGenome -v mygenome
+$ snpEff build -c snpEff.config -gff3 -noGenome -v mygenome > snpEff.stdout 2> snpEff.stderr
+
+# check snpEff.stderr if any error occur
+$ cat snpEff.stderr
+# snpEff.stdout should look something like above
+$ head snpEff.stdout
+
+### RUNNING SnpEff
+#Now we are all sorted to run snpEff and do SNP annotation on the outlier SNPs common btw PCAdapt and FST. 
+
+#We first need to extract the outlier SNPs from our main VCF file which includes all SNPs.
+#By having the list of outliers in a txt file we can use VCFtools to extract the outlier SNPs
+
+#NCJ US ALL
+$ vcftools --vcf ~/Scrivania/SNPs_analysis/ncjap_unl_all.vcf --snps ~/Scrivania/SNPs_GENOME_SCAN/OUTLIERS/list_of_common_outliers/Outliers_NCJ_ALL_FST_PCADAPT.txt --recode --recode-INFO-all
+$ mv out.recode.vcf out_NCJ_ALL.vcf
+
+#NCJ VS AZJOR
+$vcftools --vcf ~/Scrivania/unl_pop_vcf/ncjap_unl_azjor.vcf --snps ~/Scrivania/SNPs_GENOME_SCAN/OUTLIERS/list_of_common_outliers/Outliers_NCJ_AZJOR_FST_PCADAPT.txt --recode --recode-INFO-all
+$mv out.recode.vcf out_NCJ_AZJOR.vcf
+
+#NCJ VS AZMIG
+$ vcftools --vcf ~/Scrivania/unl_pop_vcf/ncjap_unl_azmig.vcf --snps ~/Scrivania/SNPs_GENOME_SCAN/OUTLIERS/list_of_common_outliers/Outliers_NCJ_AZMIG_FST_PCADAPT.txt --recode --recode-INFO-all
+$ mv out.recode.vcf out_NCJ_AZMIG.vcf
+
+#NCJ VS USCA
+$ vcftools --vcf ~/Scrivania/unl_pop_vcf/ncjap_unl_usca.vcf --snps ~/Scrivania/SNPs_GENOME_SCAN/OUTLIERS/list_of_common_outliers/Outliers_NCJ_USCA_FST_PCADAPT.txt --recode --recode-INFO-all
+$ mv out.recode.vcf out_NCJ_USCA.vcf
+
+#NCJ VS ITTC
+$ vcftools --vcf ~/Scrivania/unl_pop_vcf/ncjap_unl_ittc.vcf --snps ~/Scrivania/SNPs_GENOME_SCAN/OUTLIERS/list_of_common_outliers/Outliers_NCJ_ITTC_FST_PCADAPT.txt --recode --recode-INFO-all
+$ mv out.recode.vcf out_NCJ_ITTC.vcf
+
+# SNPs ANNOTATION
+$ java -Xmx4g -jar snpEff.jar -c snpEff.config mygenome out_NCJ_ALL.vcf > annot_NCJ_ALL.vcf
+$ java -Xmx4g -jar snpEff.jar -c snpEff.config mygenome out_NCJ_USCA.vcf > annot_NCJ_USCA.vcf
+$ java -Xmx4g -jar snpEff.jar -c snpEff.config mygenome out_NCJ_AZJOR.vcf > anot_NCJ_AZJOR.vcf
+$ java -Xmx4g -jar snpEff.jar -c snpEff.config mygenome out_NCJ_AZMIG.vcf > annot_NCJ_AZMIG.vcf
+$ java -Xmx4g -jar snpEff.jar -c snpEff.config mygenome out_NCJ_ITTC.vcf > annot_gff_NCJ_ITTC.vcf
+
+# Each run produces 3 files: 
+# annoted.vcf file with outlier SNPs --> this contains an ANN field which gives you information on properties of each annotated snp.
+# summary.html --> https://pcingola.github.io/SnpEff/se_outputsummary/ #here a guide for interpretation 
+# gene list.txt of annotated genes that should look something like this 
+#---
+# The following table is formatted as tab separated values. 
+#GeneName	GeneId	TranscriptId	BioType	variants_impact_LOW	variants_impact_MODIFIER	variants_effect_downstream_gene_variant	variants_effect_intron_variant	variants_effect_synonymous_variant	variants_effect_upstream_gene_variant	attributes
+g15733	g15733	g15733.t1	protein_coding	0	1	0	0	0	1	
+g15734	g15734	g15734.t1	protein_coding	0	1	0	1	0	0	
+g16003	g16003	g16003.t1	protein_coding	0	1	0	1	0	0
+g30081	g30081	g30081.t1	protein_coding	0	1	0	1	0	0
+g31147	g31147	g31147.t1	protein_coding	0	1	0	1	0	0
+g31166	g31166	g31166.t1	protein_coding	0	1	0	1	0	0
+g31166	g31166	g31166.t2	protein_coding	0	1	0	1	0	0	
+g32629	g32629	g32629.t1	protein_coding	0	1	1	0	0	0
+g6595	g6595	g6595.t1	protein_coding	0	1	1	0	0	0	
+g6596	g6596	g6596.t1	protein_coding	1	0	0	0	1	0	
+g6597	g6597	g6597.t1	protein_coding	0	1	0	0	0	1	
+g9558	g9558	g9558.t1	protein_coding	0	1	0	0	0	1
+g9559	g9559	g9559.t1	protein_coding	1	0	0	0	1	0	
+#---
+
+#For each gene list I manually searched for annotated proteins, following lines are just 2 examples
+$ cat genes.gff | grep -F 'g15733.t1'
+$ cat genes.gff | grep -F 'g15734.t1'
+#When finding proteins, I added this information to the related gene line in the gene_list.txt file
+
+#Now use snpSift to get a nice txt file that has all the information about the interesting variants from snpEff vcf output:
+$ conda install -c bioconda snpsift
+
+$ cat annot_results_gff/annot_NCJ_ALL.vcf | ~/miniconda3/pkgs/snpeff-5.1-hdfd78af_2/share/snpeff-5.1-2/scripts/vcfEffOnePerLine.pl | java -Xmx8g -jar ~/miniconda3/pkgs/snpsift-5.1-hdfd78af_0/share/snpsift-5.1-0/SnpSift.jar extractFields - CHROM POS ID REF ALT AF "ANN[*].ALLELE" "ANN[*].EFFECT" "ANN[*].IMPACT" "ANN[*].GENE" "ANN[*].BIOTYPE" "ANN[*].HGVS_C" "ANN[*].HGVS_P" > SnpSift/outlierSNPs_NCJ_ALL.annot.sift.txt
+ 
+$ cat annot_results_gff/annot_NCJ_USCA.vcf | ~/miniconda3/pkgs/snpeff-5.1-hdfd78af_2/share/snpeff-5.1-2/scripts/vcfEffOnePerLine.pl | java -Xmx8g -jar ~/miniconda3/pkgs/snpsift-5.1-hdfd78af_0/share/snpsift-5.1-0/SnpSift.jar extractFields - CHROM POS ID REF ALT AF "ANN[*].ALLELE" "ANN[*].EFFECT" "ANN[*].IMPACT" "ANN[*].GENE" "ANN[*].BIOTYPE" "ANN[*].HGVS_C" "ANN[*].HGVS_P" > outlierSNPs_NCJ_USCA.annot.sift.txt
+
+$ cat annot_results_gff/annot_NCJ_AZJOR.vcf | ~/miniconda3/pkgs/snpeff-5.1-hdfd78af_2/share/snpeff-5.1-2/scripts/vcfEffOnePerLine.pl | java -Xmx8g -jar ~/miniconda3/pkgs/snpsift-5.1-hdfd78af_0/share/snpsift-5.1-0/SnpSift.jar extractFields - CHROM POS ID REF ALT AF "ANN[*].ALLELE" "ANN[*].EFFECT" "ANN[*].IMPACT" "ANN[*].GENE" "ANN[*].BIOTYPE" "ANN[*].HGVS_C" "ANN[*].HGVS_P" > SnpSift/outlierSNPs_NCJ_AZJOR.annot.sift.txt
+
+$ cat annot_results_gff/annot_NCJ_AZMIG.vcf | ~/miniconda3/pkgs/snpeff-5.1-hdfd78af_2/share/snpeff-5.1-2/scripts/vcfEffOnePerLine.pl | java -Xmx8g -jar ~/miniconda3/pkgs/snpsift-5.1-hdfd78af_0/share/snpsift-5.1-0/SnpSift.jar extractFields - CHROM POS ID REF ALT AF "ANN[*].ALLELE" "ANN[*].EFFECT" "ANN[*].IMPACT" "ANN[*].GENE" "ANN[*].BIOTYPE" "ANN[*].HGVS_C" "ANN[*].HGVS_P" > SnpSift/outlierSNPs_NCJ_AZMIG.annot.sift.txt
+
+$ cat annot_results_gff/annot_gff_NCJ_ITTC.vcf | ~/miniconda3/pkgs/snpeff-5.1-hdfd78af_2/share/snpeff-5.1-2/scripts/vcfEffOnePerLine.pl | java -Xmx8g -jar ~/miniconda3/pkgs/snpsift-5.1-hdfd78af_0/share/snpsift-5.1-0/SnpSift.jar extractFields - CHROM POS ID REF ALT AF "ANN[*].ALLELE" "ANN[*].EFFECT" "ANN[*].IMPACT" "ANN[*].GENE" "ANN[*].BIOTYPE" "ANN[*].HGVS_C" "ANN[*].HGVS_P" > SnpSift/outlierSNPs_NCJ_ITTC.annot.sift.txt
+
+#could have used a loop
+#The resulting .txt file contains the variants, that have caused major protein change or that are just silent, using the IMPACT column. You can see HIGH, MODERATE, LOW and MODIFIER in this column. The definition of each (and other genomics/transcriptomics terms) can be found at: https://asia.ensembl.org/Help/Glossary.
+
+
+
